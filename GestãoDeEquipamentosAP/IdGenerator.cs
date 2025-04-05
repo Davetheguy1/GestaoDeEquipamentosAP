@@ -6,7 +6,14 @@ using System.Threading.Tasks;
 
 namespace GestãoDeEquipamentosAP
 {
-    public class IdGenerator
+    public static class IdGenerator // o static faz com que esse valores sejam constantes indepente da instancia. 
     {
+        public static int ItemId = 0;
+
+        public static int GenerateId()
+        {
+            ItemId++;
+            return ItemId;
+        }
     }
 }
