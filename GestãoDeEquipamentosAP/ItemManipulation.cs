@@ -8,7 +8,7 @@ namespace GestãoDeEquipamentosAP
 {
     public class ItemManipulation
     {
-        public Item[] Items = new Item[100];
+        public static Item[] Items = new Item[100];
         public int amountOfItems;
 
         Text text = new Text();
@@ -128,4 +128,6 @@ namespace GestãoDeEquipamentosAP
             Console.ReadLine();
         }
     }
+
+
 }
