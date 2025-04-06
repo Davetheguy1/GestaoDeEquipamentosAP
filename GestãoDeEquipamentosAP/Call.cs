@@ -16,10 +16,8 @@ namespace GestãoDeEquipamentosAP
         public TimeSpan Posted;
 
        
-        public Call(string title, string description, string name)
+        public Call(string description, string name)
         {
-            
-            Title = title;
             Description = description;
             Name = name;
             
@@ -32,6 +30,12 @@ namespace GestãoDeEquipamentosAP
             TimeSpan finalDatetime = currentDateTime - input;
 
             return finalDatetime;
+        }
+
+        public string generateTitle()
+        {
+            string callTitle = "CHAM - " + Id.ToString();
+            return callTitle;
         }
     }
 }

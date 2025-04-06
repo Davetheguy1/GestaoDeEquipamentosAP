@@ -17,22 +17,21 @@ namespace GestãoDeEquipamentosAP
         {
             
             text.CallRegisterText();
-            Console.WriteLine("Titulo do Chamado:\n");
-            string title = Console.ReadLine();
-
-            Console.WriteLine("Descrição do Chamado:\n");
-            string desciption = Console.ReadLine();
 
             Console.WriteLine("Nome do Equipamento a ser chamado:\n");
             string name = Console.ReadLine();
+
+            Console.WriteLine("Descrição do Chamado:\n");
+            string desciption = Console.ReadLine();
 
             Console.WriteLine("Data de Postagem do Chamado:");
             DateTime input = DateTime.Parse(Console.ReadLine());
                
 
 
-            Call newCall = new Call(title, desciption, name);
+            Call newCall = new Call(desciption, name);
             newCall.Id = IdGenerator.GenerateId();
+            newCall.Title = newCall.generateTitle();
             newCall.Posted = newCall.daysSincePosted(input);
 
             calls[amountOfCalls++] = newCall;
@@ -70,8 +69,6 @@ namespace GestãoDeEquipamentosAP
             Console.WriteLine("\nDigite o ID do Chamado que deseja Editar:\n");
             int selectedId = int.Parse(Console.ReadLine());
 
-            Console.WriteLine("Titulo do Chamado:\n");
-            string title = Console.ReadLine();
 
             Console.WriteLine("Descrição do Chamado:\n");
             string desciption = Console.ReadLine();
@@ -82,7 +79,7 @@ namespace GestãoDeEquipamentosAP
             Console.WriteLine("Data de Postagem do Chamado:");
             DateTime input = DateTime.Parse(Console.ReadLine());
 
-            Call newCall = new Call(title, desciption, name);
+            Call newCall = new Call(desciption, name);
             newCall.Posted = newCall.daysSincePosted(input);
             bool wasEditSucessful = false;
 
@@ -92,7 +89,6 @@ namespace GestãoDeEquipamentosAP
 
                 else if (calls[i].Id == selectedId)
                 {
-                    calls[i].Title = newCall.Title;
                     calls[i].Description = newCall.Description;
                     calls[i].Name = newCall.Name;
                     calls[i].Posted = newCall.Posted;
