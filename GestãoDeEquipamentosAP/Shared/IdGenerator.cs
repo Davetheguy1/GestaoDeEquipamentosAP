@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GestãoDeEquipamentosAP
+namespace GestãoDeEquipamentosAP.Shared
 {
     public static class IdGenerator // o static faz com que esse valores sejam constantes indepente da instancia. 
     {

@@ -1,4 +1,8 @@
-﻿namespace GestãoDeEquipamentosAP
+﻿using GestãoDeEquipamentosAP.CallModule;
+using GestãoDeEquipamentosAP.ItemModule;
+using GestãoDeEquipamentosAP.Shared;
+
+namespace GestãoDeEquipamentosAP
 {
     internal class Program
     {

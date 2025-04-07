@@ -1,10 +1,11 @@
-﻿using System;
+﻿using GestãoDeEquipamentosAP.Shared;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GestãoDeEquipamentosAP
+namespace GestãoDeEquipamentosAP.ItemModule
 {
     public class ItemManipulation
     {
