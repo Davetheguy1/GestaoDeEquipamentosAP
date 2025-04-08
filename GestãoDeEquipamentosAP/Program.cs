@@ -10,62 +10,63 @@ namespace GestãoDeEquipamentosAP
 
         public static void MainMenu()
         {
-            ItemManipulation Item = new ItemManipulation();
-            CallSystem Call = new CallSystem();
+            ItemSystem itemSystem = new ItemSystem();
+            ItemRepository itemRepository = itemSystem.itemRepository;
+            CallSystem Call = new CallSystem(itemRepository);
+            MainScreen mainScreen = new MainScreen();
             Text text = new Text();
+
+
 
             while (true)
             {
-                text.MainMenuText();
-                string chosenMenuOption = Console.ReadLine().ToUpper();
+                char menuOption = mainScreen.ShowMenu();
 
-                switch (chosenMenuOption)
+                if (menuOption == '1')
                 {
-                    case "1":
-                        Item.Register();
-                        break;
+                    text.ItemMenuText();
+                    char option = Console.ReadLine()[0];
 
-                    case "2":
-                        Item.Edit();
-                        break;
+                    switch (option)
+                    {
+                        case '1': itemSystem.Register(); break;
 
-                    case "3":
-                        Item.Delete();
-                        break;
+                        case '2': itemSystem.Edit(); break;
 
-                    case "4":
-                        Item.Visualize(true);
-                        break;
+                        case '3': itemSystem.Delete(); break;
 
-                    case "5":
-                        Call.RegisterCall();
-                        break;
+                        case '4': itemSystem.Visualize(true); break;
 
-                    case "6":
-                        Call.EditCall();
-                        break;
-                    
-                    case "7":
-                        Call.Close();
-                        break;
-                    
-                    case "8":
-                        Call.ViewCalls(true);
-                        break;
+                        case 'S': Environment.Exit(0); break;
 
+                        default: break;
+                    }
+                } else if (menuOption == '2')
+                {
+                    text.CallMenuText();
+                    char option = Console.ReadLine()[0];
+                    switch (option)
+                    {
+                        case '1': Call.RegisterCall(); break;
 
-                    case "S":
-                        Environment.Exit(0);
-                        break;
+                        case '2': Call.EditCall(); break;
+
+                        case '3': Call.Close(); break;
+
+                        case '4': Call.ViewCalls(true); break;
+
+                        case 'S': Environment.Exit(0); break;
 
 
-                    default:
-                        Console.WriteLine("Opção Inválida, Pressione Enter para continuar:\n");
-                        Console.ReadLine();
-                        break;
-
-
+                        default: break;
+                    }
                 }
+                else
+                {
+                    Environment.Exit(0);
+                }
+
+                
             }
            
         }

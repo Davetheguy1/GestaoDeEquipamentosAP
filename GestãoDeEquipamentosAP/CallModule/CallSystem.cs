@@ -1,4 +1,5 @@
-﻿using GestãoDeEquipamentosAP.Shared;
+﻿using GestãoDeEquipamentosAP.ItemModule;
+using GestãoDeEquipamentosAP.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,39 +10,54 @@ namespace GestãoDeEquipamentosAP.CallModule
 {
     class CallSystem
     {
-        public Call[] calls = new Call[100];
-        public int amountOfCalls;
+        public ItemRepository ItemRepository;
+        public CallRespository CallRepository;
+        
+        public CallSystem(ItemRepository itemRepository)
+        {
+            this.ItemRepository = itemRepository;
+            CallRepository = new CallRespository();
+        }
 
         Text text = new Text();
 
-        public void RegisterCall()
+       
+        public Call GetCallData()
         {
+            Console.Clear();
+            Console.WriteLine("Digite o Titúlo do Chamado:");
+            string title = Console.ReadLine();
+
+            Console.WriteLine("Digite a descrição do Chamado:");
+            string description = Console.ReadLine();
+
+            VisualizeItems();
+
+            Console.WriteLine("Digite o ID do Equipamento a ser chamado");
+            int selectedId = int.Parse(Console.ReadLine());
+
+            Item selectedItem = ItemRepository.GetItemById(selectedId);
+
+            Call newCall = new Call(title, description, selectedItem);
+
+            return newCall;
+
             
-            text.CallRegisterText();
+        }
+ 
+        public void RegisterCall() 
+        {
 
-            Console.WriteLine("Nome do Equipamento a ser chamado:\n");
-            string name = Console.ReadLine();
+            Call newCall = GetCallData();
 
-            Console.WriteLine("Descrição do Chamado:\n");
-            string desciption = Console.ReadLine();
+            CallRepository.RegisterCall(newCall);
 
-            Console.WriteLine("Data de Postagem do Chamado:");
-            DateTime input = DateTime.Parse(Console.ReadLine());
-               
-
-
-            Call newCall = new Call(desciption, name);
-            newCall.Id = IdGenerator.GenerateId();
-            newCall.Title = newCall.generateTitle();
-            newCall.Posted = newCall.daysSincePosted(input);
-
-            calls[amountOfCalls++] = newCall;
-
+            Console.WriteLine("Chamado Registrado com Sucesso");
         }
 
         public void ViewCalls(bool showTitle)
         {
-
+            
             if (showTitle)
             {
                 text.CallVisualizerText();
@@ -49,59 +65,43 @@ namespace GestãoDeEquipamentosAP.CallModule
 
             Console.WriteLine("{0, -10} | {1, -18} | {2, -18} | {3, -15} | {4, -18} ", "Id", "Titulo", "Descrição", "Equipamento", "Dias desde Aberto");
 
-            for (int i = 0; i < calls.Length; i++)
+            Call[] registeredCalls = CallRepository.selectCalls();          
+            Console.WriteLine("\nPressione Enter para Continuar:\n\n");
+            Console.ReadLine();
+
+            for (int i = 0; i < registeredCalls.Length; i++)
             {
-                Call selectedCall = calls[i];
+                Call selectedCall = registeredCalls[i];
 
                 if (selectedCall == null) continue;
 
-                Console.WriteLine("{0, -10} | {1, -18} | {2, -18} | {3, -15} | {4, -18} ", selectedCall.Id, selectedCall.Title, selectedCall.Description, selectedCall.Name, selectedCall.Posted);
+                
+                Console.WriteLine("{0, -10} | {1, -18} | {2, -18} | {3, -15} | {4, -18} ", selectedCall.Id, selectedCall.Title, selectedCall.Description, selectedCall.Item, selectedCall.daysSincePosted());
             }
-            Console.WriteLine("\nPressione Enter para Continuar:\n\n");
-            Console.ReadLine();
         }
 
         public void EditCall()
         {
-            text.CallEditorText();
+            Console.Clear();
             ViewCalls(false);
 
 
             Console.WriteLine("\nDigite o ID do Chamado que deseja Editar:\n");
             int selectedId = int.Parse(Console.ReadLine());
 
+            Call newCall = GetCallData();
 
-            Console.WriteLine("Descrição do Chamado:\n");
-            string desciption = Console.ReadLine();
+            bool wasEditSucessfull = CallRepository.EditCall(selectedId, newCall);
 
-            Console.WriteLine("Nome do Equipamento a ser chamado:\n");
-            string name = Console.ReadLine();
-
-            Console.WriteLine("Data de Postagem do Chamado:");
-            DateTime input = DateTime.Parse(Console.ReadLine());
-
-            Call newCall = new Call(desciption, name);
-            newCall.Posted = newCall.daysSincePosted(input);
-            bool wasEditSucessful = false;
-
-            for (int i = 0; i < calls.Length; i++)
+            if (!wasEditSucessfull)
             {
-                if (calls[i] == null) continue;
+                Notifier.ShowMessage("Ocorreu um Erro durante a edição", ConsoleColor.Red);
 
-                else if (calls[i].Id == selectedId)
-                {
-                    calls[i].Description = newCall.Description;
-                    calls[i].Name = newCall.Name;
-                    calls[i].Posted = newCall.Posted;
-                }
-            }
-            if (!wasEditSucessful)
-            {
-                Console.WriteLine("Erro na edição...");
                 return;
             }
-            Console.WriteLine("Chamado Editado com Sucesso.");
-            Console.ReadLine();
+
+            Notifier.ShowMessage("A Edição foi Execultada com Sucesso", ConsoleColor.Green);
+            
         }
 
         public void Close()
@@ -112,25 +112,41 @@ namespace GestãoDeEquipamentosAP.CallModule
 
             Console.WriteLine("\nDigite o ID do Chamado que deseja Editar:\n");
             int selectedId = int.Parse(Console.ReadLine());
-            bool wasEditSucessful = false;
+            bool wasEditSucessful = CallRepository.Close(selectedId);
 
-            for (int i = 0; i < calls.Length; i++)
+            if(!wasEditSucessful)
             {
-                if (calls[i] == null) continue;
+                Notifier.ShowMessage("Ocorreu um Erro durante a edição", ConsoleColor.Red);
 
-                else if (calls[i].Id == selectedId)
-                {
-                    calls[i] = null;
-                    wasEditSucessful = true;
-                }
-            }
-            if (!wasEditSucessful)
-            {
-                Console.WriteLine("Erro na edição...");
                 return;
             }
-            Console.WriteLine("Chamado Editado com Sucesso.");
-            Console.ReadLine();
+
+            Notifier.ShowMessage("A Edição foi Execultada com Sucesso", ConsoleColor.Green);
+        }
+
+        public void VisualizeItems()
+        {
+            text.VisualizerText();
+            Console.WriteLine();
+
+            Console.WriteLine(
+            "{0, -10} | {1, -15} | {2, -11} | {3, -15} | {4, -15} | {5, -10}",
+            "Id", "Nome", "Num. Série", "Fabricante", "Preço", "Data de Fabricação"
+         );
+            Item[] RegisteredItems = ItemRepository.SelectItem();
+            
+            for (int i = 0; i < RegisteredItems.Length; i++)
+            {
+                Item e = RegisteredItems[i];
+
+                if (e == null) continue;
+
+                Console.WriteLine(
+                "{0, -10} | {1, -15} | {2, -11} | {3, -15} | {4, -15} | {5, -10}",
+                e.Id, e.Name, e.GetSerialNumber(), e.Make, e.Price.ToString("C2"), e.ManufactureDate.ToShortDateString()
+             );
+            }
+            Notifier.ShowMessage("\nPressione ENTER para continuar...", ConsoleColor.DarkYellow);
         }
 
 

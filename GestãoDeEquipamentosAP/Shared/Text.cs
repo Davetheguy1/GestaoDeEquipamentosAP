@@ -12,25 +12,53 @@ namespace GestãoDeEquipamentosAP.Shared
         {
             Console.Clear();
             Console.WriteLine("---------------------------");
-            Console.WriteLine("Gestão de Equipamentos");
+            Console.WriteLine("Central de Gestão");
             Console.WriteLine("---------------------------");
 
             Console.WriteLine("Ações:\n");
-            Console.WriteLine("-Manipulação de Equipamentos-\n");
-            Console.WriteLine("1- Cadastrar um Item");
-            Console.WriteLine("2- Editar um Item");
-            Console.WriteLine("3- Excluir um Item");
-            Console.WriteLine("4- Visualizar todos os Items\n");
-            Console.WriteLine("-Sistema de Chamados-\n");
-            Console.WriteLine("5- Cadastrar um novo Chamado");
-            Console.WriteLine("6- Editar um Chamado");
-            Console.WriteLine("7- Fechar um Chamado");
-            Console.WriteLine("8- Visualizar todos os Chamados");
+            Console.WriteLine("1.Gestão de Equipamentos");
+            Console.WriteLine("2.Gestão de Chamados");
             Console.WriteLine("\nS- Sair do Programa");
 
             Console.WriteLine("\nDigite uma opção válida:");
         }
 
+
+
+        public void ItemMenuText()
+        {
+            Console.Clear();
+            Console.WriteLine("---------------------------");
+            Console.WriteLine("Gestão de Equipamentos");
+            Console.WriteLine("---------------------------");
+
+            Console.WriteLine("Ações:\n");
+            Console.WriteLine("1- Cadastrar um Item");
+            Console.WriteLine("2- Editar um Item");
+            Console.WriteLine("3- Excluir um Item");
+            Console.WriteLine("4- Visualizar todos os Items\n");
+            Console.WriteLine("\nS- Voltar");
+
+            Console.WriteLine("\nDigite uma opção válida:");
+        }
+        
+        public void CallMenuText()
+        {
+            Console.Clear();
+            Console.WriteLine("---------------------------");
+            Console.WriteLine("Gestão de Equipamentos");
+            Console.WriteLine("---------------------------");
+            Console.WriteLine("Ações:\n");
+            Console.WriteLine("1- Cadastrar um novo Chamado");
+            Console.WriteLine("2- Editar um Chamado");
+            Console.WriteLine("3- Fechar um Chamado");
+            Console.WriteLine("4- Visualizar todos os Chamados");
+            Console.WriteLine("\nS- Voltar");
+
+            Console.WriteLine("\nDigite uma opção válida:");
+        }
+        
+        
         public void RegisterText()
         {
             Console.Clear();
@@ -41,7 +69,7 @@ namespace GestãoDeEquipamentosAP.Shared
 
         public void VisualizerText()
         {
-            Console.Clear();
+            
             Console.WriteLine("-------------------------");
             Console.WriteLine("Lista de Items Cadastrados");
             Console.WriteLine("-------------------------\n");

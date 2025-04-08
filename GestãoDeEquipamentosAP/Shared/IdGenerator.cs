@@ -9,11 +9,18 @@ namespace GestãoDeEquipamentosAP.Shared
     public static class IdGenerator // o static faz com que esse valores sejam constantes indepente da instancia. 
     {
         public static int ItemId = 0;
+        public static int CallId = 0;
 
-        public static int GenerateId()
+        public static int GenerateItemID()
         {
             ItemId++;
             return ItemId;
+        }
+
+        public static int GenerateCallID()
+        {
+            CallId++;
+            return CallId;
         }
     }
 }

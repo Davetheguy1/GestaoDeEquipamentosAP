@@ -7,12 +7,19 @@ using System.Threading.Tasks;
 
 namespace GestãoDeEquipamentosAP.ItemModule
 {
-    public class ItemManipulation
+    public class ItemSystem
     {
-        public static Item[] Items = new Item[100];
-        public int amountOfItems;
+        
 
         Text text = new Text();
+
+        public ItemRepository itemRepository;
+
+        public ItemSystem()
+        {
+            itemRepository = new ItemRepository();
+        }
+
 
         public void Register()
         {
@@ -30,9 +37,11 @@ namespace GestãoDeEquipamentosAP.ItemModule
             DateTime manufactureDate = DateTime.Parse(Console.ReadLine());
 
             Item newItem = new Item(name, make, price, manufactureDate);
-            newItem.Id = IdGenerator.GenerateId();
+            newItem.Id = IdGenerator.GenerateItemID();
 
-            Items[amountOfItems++] = newItem;
+            itemRepository.RegisterItem(newItem);
+
+            Notifier.ShowMessage("Equipamento Registrado com Sucesso!", ConsoleColor.Green);
         }
 
 
@@ -46,16 +55,19 @@ namespace GestãoDeEquipamentosAP.ItemModule
 
             Console.WriteLine("{0, -10} | {1, -18} | {2, -11} | {3, -15} | {4, -18} | {5, -10}", "ID", "Nome", "Num. Série", "Fabricante", "Preço", "Data de Fabricação");
 
-            for (int i = 0; i < Items.Length; i++)
+            Item[] registeredItems = itemRepository.SelectItem();
+
+            for (int i = 0; i < registeredItems.Length; i++)
             {
-                Item selectedItem = Items[i];
+                Item selectedItem = registeredItems[i];
 
                 if (selectedItem == null) continue;
 
                 Console.WriteLine("{0, -10} | {1, -18} | {2, -11} | {3, -15} | {4, -18} | {5, -10}", selectedItem.Id, selectedItem.Name, selectedItem.GetSerialNumber(), selectedItem.Make, selectedItem.Price.ToString("C2"), selectedItem.ManufactureDate.ToShortDateString());
             }
-            Console.WriteLine("\nPressione Enter para Continuar:\n\n");
-            Console.ReadLine();
+            
+            Notifier.ShowMessage("\nPressione Enter para continuar", ConsoleColor.DarkYellow);
+            
         }
 
         public void Edit()
@@ -78,27 +90,17 @@ namespace GestãoDeEquipamentosAP.ItemModule
             DateTime manufactureDate = DateTime.Parse(Console.ReadLine());
 
             Item newItem = new Item(name, make, price, manufactureDate);
-            bool wasEditSucessful = false;
+           
+            bool wasEditSucessful = itemRepository.EditItems(selectedId, newItem);
             
-            for (int i = 0; i < Items.Length; i++)
-            {
-                if (Items[i] == null) continue;
-
-                else if (Items[i].Id == selectedId)
-                {
-                    Items[i].Name = newItem.Name;
-                    Items[i].Make = newItem.Make;
-                    Items[i].Price = newItem.Price;
-                    Items[i].ManufactureDate = newItem.ManufactureDate;
-                }
-            }
             if (!wasEditSucessful)
             {
-                Console.WriteLine("Erro na edição...");
+                Notifier.ShowMessage("Um Erro Ocorreu Durante a Edição", ConsoleColor.Red);
+
                 return;
             }
-            Console.WriteLine("Item Editado com Sucesso.");
-            Console.ReadLine();
+
+            Notifier.ShowMessage("Item Editado com Sucesso", ConsoleColor.Green);
         }
 
         public void Delete()
@@ -108,25 +110,16 @@ namespace GestãoDeEquipamentosAP.ItemModule
 
             Console.WriteLine("\nDigite o ID do Equipamento que deseja Excluir:\n");
             int selectedId = int.Parse(Console.ReadLine());
-            bool wasEditSucessful = false;
+            bool wasEditSucessful = itemRepository.DeleteItems(selectedId);
 
-            for (int i = 0; i < Items.Length; i++)
-            {
-                if (Items[i] == null) continue;
-
-                else if (Items[i].Id == selectedId)
-                {
-                    Items[i] = null;
-                    wasEditSucessful = true;
-                }
-            }
             if (!wasEditSucessful)
             {
-                Console.WriteLine("Erro na edição...");
+                Notifier.ShowMessage("Um Erro Ocorreu Durante a Edição", ConsoleColor.Red);
+
                 return;
             }
-            Console.WriteLine("Item Editado com Sucesso.");
-            Console.ReadLine();
+
+            Notifier.ShowMessage("Item Deletado com Sucesso", ConsoleColor.Green);
         }
     }
 

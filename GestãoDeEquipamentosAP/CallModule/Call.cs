@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GestãoDeEquipamentosAP.ItemModule;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
@@ -12,30 +13,27 @@ namespace GestãoDeEquipamentosAP.CallModule
         public int Id;
         public string Title;
         public string Description;
-        public string Name;
-        public TimeSpan Posted;
+        public Item Item;
+        public DateTime Opened;
 
        
-        public Call(string description, string name)
+        public Call(string title, string description, Item item)
         {
+            Title = title;
             Description = description;
-            Name = name;
+            Item = item;
+            
+            Opened = DateTime.Now;
             
         }
 
-        public TimeSpan daysSincePosted(DateTime input)
+        public int daysSincePosted()
         {
-            DateTime currentDateTime = new DateTime();
+            TimeSpan diference = DateTime.Now - Opened;
 
-            TimeSpan finalDatetime = currentDateTime - input;
-
-            return finalDatetime;
+            return diference.Days;
         }
 
-        public string generateTitle()
-        {
-            string callTitle = "CHAM - " + Id.ToString();
-            return callTitle;
-        }
+        
     }
 }
