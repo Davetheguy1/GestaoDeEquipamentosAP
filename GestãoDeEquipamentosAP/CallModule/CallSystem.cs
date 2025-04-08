@@ -65,8 +65,7 @@ namespace GestãoDeEquipamentosAP.CallModule
 
             Console.WriteLine("{0, -10} | {1, -18} | {2, -18} | {3, -15} | {4, -18} ", "Id", "Titulo", "Descrição", "Equipamento", "Dias desde Aberto");
 
-            Call[] registeredCalls = CallRepository.selectCalls();          
-            Console.WriteLine("\nPressione Enter para Continuar:\n\n");
+            Call[] registeredCalls = CallRepository.selectCalls();
             Console.ReadLine();
 
             for (int i = 0; i < registeredCalls.Length; i++)
@@ -76,7 +75,7 @@ namespace GestãoDeEquipamentosAP.CallModule
                 if (selectedCall == null) continue;
 
                 
-                Console.WriteLine("{0, -10} | {1, -18} | {2, -18} | {3, -15} | {4, -18} ", selectedCall.Id, selectedCall.Title, selectedCall.Description, selectedCall.Item, selectedCall.daysSincePosted());
+                Console.WriteLine("{0, -10} | {1, -18} | {2, -18} | {3, -15} | {4, -18} ", selectedCall.Id, selectedCall.Title, selectedCall.Description, selectedCall.Item.Name, selectedCall.daysSincePosted());
             }
         }
 

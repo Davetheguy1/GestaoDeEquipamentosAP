@@ -74,7 +74,8 @@ namespace GestãoDeEquipamentosAP
         
         static void Main(string[] args)
         {
-           MainMenu();
+           
+            MainMenu();
         }
     }
 }
