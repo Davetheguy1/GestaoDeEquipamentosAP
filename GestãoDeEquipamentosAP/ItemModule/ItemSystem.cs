@@ -10,7 +10,7 @@ namespace GestãoDeEquipamentosAP.ItemModule
 {
     public class ItemSystem
     {
-        
+
 
         Text text = new Text();
 
@@ -40,7 +40,7 @@ namespace GestãoDeEquipamentosAP.ItemModule
 
         public void Visualize(bool showTitle)
         {
-            
+
             if (showTitle)
             {
                 text.VisualizerText();
@@ -58,9 +58,37 @@ namespace GestãoDeEquipamentosAP.ItemModule
 
                 Console.WriteLine("{0, -10} | {1, -18} | {2, -11} | {3, -15} | {4, -18} | {5, -10}", selectedItem.Id, selectedItem.Name, selectedItem.GetSerialNumber(), selectedItem.Make, selectedItem.Price.ToString("C2"), selectedItem.ManufactureDate.ToShortDateString());
             }
-            
+
+            Console.WriteLine();
             Notifier.ShowMessage("\nPressione Enter para continuar", ConsoleColor.DarkYellow);
-            
+
+        }
+
+        public void VisualizeMakes()
+        {
+            text.MakeVisualizerText();
+            Console.WriteLine(
+            "{0, -6} | {1, -20} | {2, -30} | {3, -30} | {4, -20}",
+            "Id", "Nome", "Email", "Telefone", "Qtd. Equipamentos"
+        );
+            Make[] registeredMakes = makeRepository.SelectMakes();
+
+            for (int i = 0; i < registeredMakes.Length; i++)
+            {
+                Make m = registeredMakes[i];
+
+                if (m == null)
+                {
+                    continue;
+                }
+
+                Console.WriteLine(
+                "{0, -6} | {1, -20} | {2, -30} | {3, -30} | {4, -20}",
+               m.Id, m.Name, m.Email, m.Telephone, m.AmountOfItemsInMake()
+           );
+            }
+            Console.WriteLine();
+            Notifier.ShowMessage("Pressione Enter para Continuar.", ConsoleColor.DarkYellow);
         }
 
         public void Edit()
@@ -72,14 +100,14 @@ namespace GestãoDeEquipamentosAP.ItemModule
 
             Item oldItem = itemRepository.GetItemById(selectedId);
             Make oldMake = oldItem.Make;
-            
+
             Console.WriteLine();
 
             Item editedItem = GetItemData();
             Make editedMake = oldItem.Make;
-           
+
             bool wasEditSucessful = itemRepository.EditItems(selectedId, newItem);
-            
+
             if (!wasEditSucessful)
             {
                 Notifier.ShowMessage("Um Erro Ocorreu Durante a Edição", ConsoleColor.Red);
@@ -118,7 +146,29 @@ namespace GestãoDeEquipamentosAP.ItemModule
 
             Notifier.ShowMessage("Item Deletado com Sucesso", ConsoleColor.Green);
         }
+
+        public Item GetItemData()
+        {
+            Console.WriteLine("Digite o Nome do Equipamento: ");
+            string name = Console.ReadLine();
+
+            Console.WriteLine("Digite o Preço do Equipamento: ");
+            decimal price = decimal.Parse(Console.ReadLine());
+
+            Console.WriteLine("Digite a data de fabricação do Equipamento: (dd/mm/yyyy): ");
+            DateTime manufactureDate = DateTime.Parse(Console.ReadLine());
+
+            VisualizeMakes();
+
+            Console.WriteLine("Digite o Id do Fabricante do Equipamento:");
+            int selectedId = int.Parse(Console.ReadLine());
+
+            Make selectedMake = makeRepository.GetMakeById(selectedId);
+
+            Item item = new Item(name, selectedMake, price, manufactureDate);
+
+            return item;
+        }
+
     }
-
-
 }
