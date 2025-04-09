@@ -10,6 +10,7 @@ namespace GestãoDeEquipamentosAP.Shared
     {
         public static int ItemId = 0;
         public static int CallId = 0;
+        public static int MakeId = 0;
 
         public static int GenerateItemID()
         {
@@ -21,6 +22,12 @@ namespace GestãoDeEquipamentosAP.Shared
         {
             CallId++;
             return CallId;
+        }
+
+        public static int GenerateMakeId()
+        {
+            MakeId++;
+            return MakeId;
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GestãoDeEquipamentosAP.MakeModule;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,11 +11,11 @@ namespace GestãoDeEquipamentosAP.ItemModule
     {
         public int Id;
         public string Name;
-        public string Make;
+        public Make Make;
         public decimal Price;
         public DateTime ManufactureDate;
 
-        public Item(string name, string make, decimal price, DateTime manufactureDate) //this is a constructor
+        public Item(string name, Make make, decimal price, DateTime manufactureDate) //this is a constructor
         {
             
             Name = name;

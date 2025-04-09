@@ -60,7 +60,30 @@ namespace GestãoDeEquipamentosAP
 
                         default: break;
                     }
+                } else if (menuOption == '3')
+                {
+                    text.MakeMenuText();
+                    char option = Console.ReadLine()[0];
+                    switch (option)
+                    {
+                        //case '1': Make.RegisterMake(); break;
+
+                        //case '2': Make.EditMake(); break;
+
+                        //case '3': Make.DeleteMake(); break;
+
+                        //case '4': Make.ViewMakes(true); break;
+
+                        //case 'S': Environment.Exit(0); break;
+
+
+                        default: break;
+                    }
                 }
+
+
+
+
                 else
                 {
                     Environment.Exit(0);

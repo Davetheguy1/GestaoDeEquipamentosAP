@@ -18,6 +18,7 @@ namespace GestãoDeEquipamentosAP.Shared
             Console.WriteLine("Ações:\n");
             Console.WriteLine("1.Gestão de Equipamentos");
             Console.WriteLine("2.Gestão de Chamados");
+            Console.WriteLine("3.Gestão de Fabricantes");
             Console.WriteLine("\nS- Sair do Programa");
 
             Console.WriteLine("\nDigite uma opção válida:");
@@ -57,8 +58,23 @@ namespace GestãoDeEquipamentosAP.Shared
 
             Console.WriteLine("\nDigite uma opção válida:");
         }
-        
-        
+
+        public void MakeMenuText()
+        {
+            Console.Clear();
+            Console.WriteLine("---------------------------");
+            Console.WriteLine("Gestão de Fabricante");
+            Console.WriteLine("---------------------------");
+            Console.WriteLine("Ações:\n");
+            Console.WriteLine("1- Cadastrar um novo Fabricante");
+            Console.WriteLine("2- Editar um Fabricante");
+            Console.WriteLine("3- Exlcuir um Fabricante");
+            Console.WriteLine("4- Visualizar todos os Fabricantes");
+            Console.WriteLine("\nS- Voltar");
+
+            Console.WriteLine("\nDigite uma opção válida:");
+        }
+
         public void RegisterText()
         {
             Console.Clear();
@@ -125,5 +141,40 @@ namespace GestãoDeEquipamentosAP.Shared
             Console.WriteLine("Fechar um Chamado");
             Console.WriteLine("-------------------------\n");
         }
+
+        public void MakeRegisterText()
+        {
+            Console.Clear();
+            Console.WriteLine("--------------------");
+            Console.WriteLine("Cadastrar Novo Fabricante");
+            Console.WriteLine("--------------------\n");
+        }
+
+
+        public void MakeVisualizerText()
+        {
+            Console.Clear();
+            Console.WriteLine("-------------------------");
+            Console.WriteLine("Lista de Fabricantes Registrados:");
+            Console.WriteLine("-------------------------\n");
+        }
+
+        public void MakeEditorText()
+        {
+            Console.Clear();
+            Console.WriteLine("-------------------------");
+            Console.WriteLine("Editar um Fabricante:");
+            Console.WriteLine("-------------------------\n");
+        }
+
+        public void MakeDeleteText()
+        {
+            Console.Clear();
+            Console.WriteLine("-------------------------");
+            Console.WriteLine("Excluir um Fabricante");
+            Console.WriteLine("-------------------------\n");
+        }
+
+
     }
 }

@@ -1,4 +1,5 @@
-﻿using GestãoDeEquipamentosAP.Shared;
+﻿using GestãoDeEquipamentosAP.MakeModule;
+using GestãoDeEquipamentosAP.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,30 +15,22 @@ namespace GestãoDeEquipamentosAP.ItemModule
         Text text = new Text();
 
         public ItemRepository itemRepository;
+        public MakeRepository makeRepository;
 
-        public ItemSystem()
+        public ItemSystem(ItemRepository itemRepository, MakeRepository makeRepository)
         {
-            itemRepository = new ItemRepository();
+            this.itemRepository = itemRepository;
+            this.makeRepository = makeRepository;
         }
 
 
         public void Register()
         {
-            text.RegisterText();
-            Console.WriteLine("Nome do Equipamento:\n");
-            string name = Console.ReadLine();
+            Item newItem = GetItemData();
 
-            Console.WriteLine("Nome do Fabricante:\n");
-            string make = Console.ReadLine();
+            Make make = newItem.Make;
 
-            Console.WriteLine("Preço de Aquisição:\n");
-            decimal price = decimal.Parse(Console.ReadLine());
-
-            Console.WriteLine("Data de Fabricação (dd/mm/yyyy):");
-            DateTime manufactureDate = DateTime.Parse(Console.ReadLine());
-
-            Item newItem = new Item(name, make, price, manufactureDate);
-            newItem.Id = IdGenerator.GenerateItemID();
+            make.AddItem(newItem);
 
             itemRepository.RegisterItem(newItem);
 
@@ -77,19 +70,13 @@ namespace GestãoDeEquipamentosAP.ItemModule
             Console.WriteLine("\nDigite o ID do Equipamento que deseja Editar:\n");
             int selectedId = int.Parse(Console.ReadLine());
 
-            Console.WriteLine("Nome do Equipamento:\n");
-            string name = Console.ReadLine();
+            Item oldItem = itemRepository.GetItemById(selectedId);
+            Make oldMake = oldItem.Make;
+            
+            Console.WriteLine();
 
-            Console.WriteLine("Nome do Fabricante:\n");
-            string make = Console.ReadLine();
-
-            Console.WriteLine("Preço de Aquisição:\n");
-            decimal price = decimal.Parse(Console.ReadLine());
-
-            Console.WriteLine("Data de Fabricação (dd/mm/yyyy):");
-            DateTime manufactureDate = DateTime.Parse(Console.ReadLine());
-
-            Item newItem = new Item(name, make, price, manufactureDate);
+            Item editedItem = GetItemData();
+            Make editedMake = oldItem.Make;
            
             bool wasEditSucessful = itemRepository.EditItems(selectedId, newItem);
             
@@ -98,6 +85,11 @@ namespace GestãoDeEquipamentosAP.ItemModule
                 Notifier.ShowMessage("Um Erro Ocorreu Durante a Edição", ConsoleColor.Red);
 
                 return;
+            }
+            if (oldMake != editedMake)
+            {
+                oldMake.DeleteItem(oldItem);
+                editedMake.AddItem(editedItem);
             }
 
             Notifier.ShowMessage("Item Editado com Sucesso", ConsoleColor.Green);
@@ -110,6 +102,8 @@ namespace GestãoDeEquipamentosAP.ItemModule
 
             Console.WriteLine("\nDigite o ID do Equipamento que deseja Excluir:\n");
             int selectedId = int.Parse(Console.ReadLine());
+
+            Item selectedItem = itemRepository.GetItemById(selectedId);
             bool wasEditSucessful = itemRepository.DeleteItems(selectedId);
 
             if (!wasEditSucessful)
@@ -118,6 +112,9 @@ namespace GestãoDeEquipamentosAP.ItemModule
 
                 return;
             }
+
+            Make selectedMake = selectedItem.Make;
+            selectedMake.DeleteItem(selectedItem);
 
             Notifier.ShowMessage("Item Deletado com Sucesso", ConsoleColor.Green);
         }
